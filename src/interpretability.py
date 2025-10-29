@@ -466,3 +466,25 @@ class ModelInterpreter:
         print(f"\n✅ Interpretability analysis completed for {model_name}")
         
         return report
+
+
+# Standalone wrapper functions for compatibility
+def plot_shap_summary(model, X_train: np.ndarray, X_test: np.ndarray, model_name: str = "Model") -> None:
+    """Standalone wrapper for SHAP summary plotting"""
+    interpreter = ModelInterpreter()
+    shap_data = interpreter.shap_analysis(model, X_train, X_test, model_name)
+    if shap_data:
+        interpreter.plot_shap_summary(shap_data, model_name)
+
+
+def plot_feature_importance(model, model_name: str = "Model", top_n: int = 20, 
+                          X_train: Optional[np.ndarray] = None,
+                          y_train: Optional[np.ndarray] = None) -> None:
+    """Standalone wrapper for feature importance plotting"""
+    if X_train is None or y_train is None:
+        print("⚠️ plot_feature_importance requires X_train and y_train for analysis")
+        return
+    
+    interpreter = ModelInterpreter()
+    importance_data = interpreter.analyze_feature_importance(model, X_train, y_train, model_name)
+    interpreter.plot_feature_importance(importance_data, model_name, top_k=top_n)
