@@ -46,27 +46,57 @@ def train_and_eval(
 	{"accuracy", "cv_mean", "cv_std", "pred", "proba", "model"}
 	"""
 	results: Dict[str, Dict[str, Any]] = {}
+	
+	if not models:
+		print("⚠️ train_and_eval: No models provided")
+		return results
+	
+	if len(X_train) == 0 or len(y_train) == 0:
+		print("⚠️ train_and_eval: Empty training data")
+		return results
+	
 	for name, model in models.items():
-		# Cross-validation on train set
-		cv_scores = cross_val_score(model, X_train, y_train, cv=cv_folds, scoring="accuracy", n_jobs=-1)
-
-		# Fit and evaluate on held-out set
-		model.fit(X_train, y_train)
-		pred = model.predict(X_test)
-		accuracy = accuracy_score(y_test, pred)
-		proba = None
-		if hasattr(model, "predict_proba"):
+		try:
+			print(f"  Training {name}...")
+			
+			# Cross-validation on train set
 			try:
-				proba = model.predict_proba(X_test)[:, 1]
-			except Exception:
-				proba = None
+				cv_scores = cross_val_score(model, X_train, y_train, cv=cv_folds, scoring="accuracy", n_jobs=-1)
+			except Exception as e:
+				print(f"    ⚠️ CV failed for {name}: {e}")
+				cv_scores = np.array([0.0])  # Fallback
 
-		results[name] = {
-			"accuracy": float(accuracy),
-			"cv_mean": float(cv_scores.mean()),
-			"cv_std": float(cv_scores.std()),
-			"pred": pred,
-			"proba": proba,
-			"model": model,
-		}
+			# Fit and evaluate on held-out set
+			model.fit(X_train, y_train)
+			pred = model.predict(X_test)
+			accuracy = accuracy_score(y_test, pred)
+			
+			# Handle probabilities (multi-class safe)
+			proba = None
+			if hasattr(model, "predict_proba"):
+				try:
+					proba_full = model.predict_proba(X_test)
+					# For binary classification, use column 1; for multi-class, use full array
+					if proba_full.shape[1] == 2:
+						proba = proba_full[:, 1]
+					else:
+						proba = proba_full  # Keep full probability matrix for multi-class
+				except Exception as e:
+					proba = None
+
+			results[name] = {
+				"accuracy": float(accuracy),
+				"cv_mean": float(cv_scores.mean()),
+				"cv_std": float(cv_scores.std()),
+				"pred": pred,
+				"proba": proba,
+				"model": model,
+			}
+			print(f"    ✅ {name}: Accuracy={accuracy:.4f}, CV={cv_scores.mean():.4f}±{cv_scores.std():.4f}")
+		except Exception as e:
+			print(f"    ❌ {name} failed: {e}")
+			import traceback
+			traceback.print_exc()
+			continue
+	
 	return results
