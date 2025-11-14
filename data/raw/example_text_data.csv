@@ -1,0 +1,6 @@
+subject_id,text_length,avg_sentence_length,max_sentence_length,avg_dependency_depth,avg_words_per_sentence,sentence_count,type_token_ratio,unique_words,total_words,avg_word_length,lexical_diversity,embedding_similarity,semantic_coherence,label
+patient_001,1200,9.5,18,4.2,7.2,25,0.52,85,180,4.9,47,0.62,0.58,1
+patient_002,1850,16.2,28,6.8,12.5,32,0.71,220,310,5.6,71,0.88,0.85,0
+patient_003,980,8.1,15,3.8,6.5,20,0.48,70,150,4.6,47,0.58,0.55,1
+patient_004,2100,18.5,32,7.5,14.2,35,0.74,250,350,5.9,71,0.91,0.89,0
+

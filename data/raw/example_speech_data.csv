@@ -1,0 +1,6 @@
+subject_id,total_pause_duration,mean_pause_duration,max_pause_duration,pause_count,pause_ratio,total_duration,repetition_ratio,unique_word_ratio,word_count,avg_word_length,immediate_repetition_ratio,mean_pitch,std_pitch,pitch_range,pitch_variation_coef,transcription_length,label
+patient_001,4.2,0.8,2.1,12,0.15,45,0.35,0.65,120,5.2,0.12,180,45,120,0.25,380,1
+patient_002,2.1,0.4,1.2,8,0.08,38,0.22,0.78,150,5.8,0.06,220,55,140,0.32,520,0
+patient_003,5.8,1.1,3.2,15,0.22,52,0.42,0.58,95,4.8,0.18,160,35,95,0.22,280,1
+patient_004,1.8,0.3,0.9,6,0.06,42,0.18,0.82,180,6.1,0.04,240,60,150,0.35,650,0
+

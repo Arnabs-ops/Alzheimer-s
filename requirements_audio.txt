@@ -1,0 +1,10 @@
+# Audio processing requirements
+pydub>=0.25.1
+
+# Note: pydub requires ffmpeg for WebM/Opus conversion
+# Install ffmpeg separately:
+#   Windows: Download from https://www.gyan.dev/ffmpeg/builds/ and add to PATH
+#   Conda: conda install -c conda-forge ffmpeg
+#   Linux: sudo apt-get install ffmpeg
+#   macOS: brew install ffmpeg
+
